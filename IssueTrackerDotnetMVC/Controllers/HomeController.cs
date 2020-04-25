@@ -8,41 +8,47 @@ using System.Web;
 using System.Web.Mvc;
 using IssueTrackerDotnetMVC.DatabaseContext;
 using IssueTrackerDotnetMVC.Models;
+using IssueTrackerDotnetMVC.Repositories;
 
 namespace IssueTrackerDotnetMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private IssueDbContext db = new IssueDbContext();
+        private IIssueRepository repo;
 
-        // GET: Issues
-        public ActionResult Index()
+        public HomeController()
         {
-            return View(db.Issues.OrderBy(x => x.Deadline).ToList());
+            repo = new IssueRepository();
         }
 
-        // GET: Issues/Create
-        public ActionResult Create()
+        public HomeController(IIssueRepository issueRepository)
+        {
+            repo = issueRepository;
+        }
+
+        // GET: Issues 
+        public ViewResult Index()
+        {
+            return View(repo.ReadAll());
+        }
+
+        // GET: Issues/Create 
+        public ViewResult Create()
         {
             return View();
         }
 
         // POST: Issues/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IssueId,Description,Deadline")] Issue issue)
+        //public ActionResult Create([Bind(Include = "IssueId,Description,Deadline")] Issue issue)
+        public ActionResult Create([Bind(Include = "Description,Deadline")] Issue issue)
         {
-            if (ModelState.IsValid)
+            if (issue.Description != null && issue.Deadline != default(DateTime))
             {
-                issue.IssueId = Guid.NewGuid();
-                db.Issues.Add(issue);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                repo.Save(issue);
             }
-
-            return View(issue);
+            return RedirectToAction("Index");
         }
 
         // GET: Issues/Delete/5
@@ -52,7 +58,7 @@ namespace IssueTrackerDotnetMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Issue issue = db.Issues.Find(id);
+            Issue issue = repo.ReadOne(id);
             if (issue == null)
             {
                 return HttpNotFound();
@@ -63,21 +69,19 @@ namespace IssueTrackerDotnetMVC.Controllers
         // POST: Issues/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(Guid? id)
         {
-            Issue issue = db.Issues.Find(id);
-            db.Issues.Remove(issue);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            if (id == null)
             {
-                db.Dispose();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            base.Dispose(disposing);
+            Issue issue = repo.ReadOne(id);
+            if (issue == null)
+            {
+                return HttpNotFound();
+            }
+            repo.Delete(issue);
+            return RedirectToAction("Index");
         }
     }
 }

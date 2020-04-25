@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTrackerDotnetMVC", "IssueTrackerDotnetMVC\IssueTrackerDotnetMVC.csproj", "{027D0B00-635C-47D6-B5F5-1BDED835F464}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{36BC6A62-2423-4904-A062-329C1CBCA8B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{027D0B00-635C-47D6-B5F5-1BDED835F464}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{027D0B00-635C-47D6-B5F5-1BDED835F464}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{027D0B00-635C-47D6-B5F5-1BDED835F464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BC6A62-2423-4904-A062-329C1CBCA8B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BC6A62-2423-4904-A062-329C1CBCA8B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BC6A62-2423-4904-A062-329C1CBCA8B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BC6A62-2423-4904-A062-329C1CBCA8B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
