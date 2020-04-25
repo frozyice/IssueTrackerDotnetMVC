@@ -6,53 +6,64 @@
 }
 
 <h2>Issues</h2>
-
 <p>
     <input type="button" class="btn btn-primary btn-lg" value="Create New" onclick="location.href='@Url.Action("Create","Home")'" />
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Deadline)
-        </th>
-        <th></th>
-    </tr>
+@if (Model.Count() != 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    var time = item.Deadline - DateTime.Now.AddHours(-1);
+        @foreach (var item in Model)
+        {
+            var time = item.Deadline - DateTime.Now.AddHours(-1);
 
-    <tr> 
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            <div>@Html.DisplayFor(modelItem => item.Deadline)</div>
-            @if (item.Deadline < DateTime.Now)
-            {
-                <span class="label label-danger">
-                    over deadline
-                </span>
-            }
-            else if (item.Deadline < DateTime.Now.AddHours(1))
-            {
-                <span class="label label-warning">
-                    @time.ToString("'deadline in 'mm' min'")
-                </span>
-            }
-        </td>
-        <td>
-            <input type="button" class="btn btn-success" value="Mark Resolved" onclick="location.href='@Url.Action("Delete","Home",new { id = item.IssueId })'" />
-        </td>
-    </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    <div>@Html.DisplayFor(modelItem => item.Deadline)</div>
+                    @if (item.Deadline < DateTime.Now)
+                    {
+                        <span class="label label-danger">
+                            over deadline
+                        </span>
+                    }
+                    else if (item.Deadline < DateTime.Now.AddHours(1))
+                    {
+                        <span class="label label-warning">
+                            @time.ToString("'deadline in 'mm' min'")
+                        </span>
+                    }
+                </td>
+                <td>
+                    <input type="button" class="btn btn-success" value="Mark Resolved" onclick="location.href='@Url.Action("Delete","Home",new { id = item.IssueId })'" />
+                </td>
+            </tr>
+        }
+
+    </table>
 }
-
-</table>
+else
+{
+    <div class="jumbotron">
+        <h1>:)</h1>
+        <p class="lead">All issues resolved</p>
+        
+    </div>
+}
